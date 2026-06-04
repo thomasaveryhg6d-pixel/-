@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>道家命理推演 - 八字命理 · 阴阳五行 · 八卦易经</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* 动画和加载效果 */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+        }
+        .loading-overlay.show {
+            display: flex;
+        }
+        .loading-bagua {
+            width: 120px;
+            height: 120px;
+            font-size: 80px;
+            animation: rotate 3s linear infinite;
+            margin-bottom: 20px;
+        }
+        .loading-text {
+            color: #fbbf24;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .loading-step {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            min-height: 24px;
+        }
+        
+        /* 道家理论展示 */
+        .theory-banner {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .theory-banner h3 {
+            color: #fbbf24;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        .theory-quote {
+            color: #e2e8f0;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-source {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        /* 方法选择 */
+        .method-selector {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .method-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 15px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            background: #1e293b;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .method-btn:hover {
+            border-color: #d4af37;
+            background: #2d3a4f;
+        }
+        .method-btn.active {
+            border-color: #fbbf24;
+            background: linear-gradient(135deg, #2d3a4f, #1e293b);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
+        }
+        .method-btn .icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        .method-btn .name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        .method-btn .desc {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 5px;
+        }
+        
+        /* 阴阳鱼动画 */
+        .yinyang-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .yinyang {
+            width: 60px;
+            height: 60px;
+            font-size: 50px;
+            animation: rotate 8s linear infinite;
+        }
+        
+        /* 八卦方位图 */
+        .bagua-compass {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            position: relative;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1e293b, #0f172a);
+            border: 3px solid #d4af37;
+        }
+        .bagua-compass .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+        }
+        .bagua-compass .direction {
+            position: absolute;
+            color: #fbbf24;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .bagua-compass .north { top: 5px; left: 50%; transform: translateX(-50%); }
+        .bagua-compass .south { bottom: 5px; left: 50%; transform: translateX(-50%); }
+        .bagua-compass .east { right: 5px; top: 50%; transform: translateY(-50%); }
+        .bagua-compass .west { left: 5px; top: 50%; transform: translateY(-50%); }
+        
+        /* 五行相生相克图 */
+        .wuxing-cycle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 0;
+        }
+        .wuxing-circle {
+            position: relative;
+            width: 250px;
+            height: 250px;
+        }
+        .wuxing-node {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .wuxing-node.metal { background: linear-gradient(135deg, #c0c0c0, #808080); top: 50%; left: -10px; transform: translateY(-50%); }
+        .wuxing-node.wood { background: linear-gradient(135deg, #228b22, #006400); top: 10%; left: 20%; }
+        .wuxing-node.water { background: linear-gradient(135deg, #1e90ff, #0000cd); top: 10%; right: 20%; }
+        .wuxing-node.fire { background: linear-gradient(135deg, #ff4500, #dc143c); bottom: 10%; right: 20%; }
+        .wuxing-node.earth { background: linear-gradient(135deg, #daa520, #b8860b); bottom: 10%; left: 20%; }
+        .wuxing-arrow {
+            position: absolute;
+            color: #d4af37;
+            font-size: 1.5rem;
+        }
+        
+        /* 结果卡片动画 - 由 animations.js 的 ScrollReveal 控制 */
+        .result-card.revealed {
+            animation: fadeInUp 0.6s ease-out;
+            opacity: 1;
+        }
+        .result-card:nth-child(2) { animation-delay: 0.1s; }
+        .result-card:nth-child(3) { animation-delay: 0.2s; }
+        .result-card:nth-child(4) { animation-delay: 0.3s; }
+        .result-card:nth-child(5) { animation-delay: 0.4s; }
+        
+        /* 卦象变爻动画 */
+        .hexagram-anim {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 8px;
+            padding: 20px;
+        }
+        .hexagram-anim .line {
+            height: 12px;
+            transition: all 0.5s ease;
+        }
+        .hexagram-anim .line.solid {
+            background: linear-gradient(90deg, #d4af37, #fbbf24, #d4af37);
+            border-radius: 2px;
+        }
+        .hexagram-anim .line.broken {
+            background: linear-gradient(90deg, #d4af37 0%, #d4af37 45%, transparent 45%, transparent 55%, #d4af37 55%, #d4af37 100%);
+        }
+        
+        /* 理论依据标签 */
+        .theory-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a5f, #0f172a);
+            border: 1px solid #d4af37;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            color: #fbbf24;
+            margin: 5px;
+        }
+        
+        /* 道家术语解释 */
+        .term-explanation {
+            background: rgba(30, 58, 95, 0.5);
+            border-left: 4px solid #d4af37;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .term-explanation h4 {
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+        .term-explanation p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* 步骤指示器 */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #334155;
+            transition: all 0.3s ease;
+        }
+        .step-dot.active {
+            background: #fbbf24;
+            transform: scale(1.2);
+        }
+        .step-dot.completed {
+            background: #22c55e;
+        }
+        
+        /* AI加载动画 */
+        .ai-loading {
+            color: #fbbf24;
+            font-size: 1rem;
+            padding: 20px;
+            text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* 抖动动画 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out !important;
+            border-color: #e74c3c !important;
+        }
+        
+        /* 操作按钮组 */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .btn-share {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-share:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+        .btn-reset {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        /* 方法详细解释面板 */
+        .method-details-panel {
+            margin: 20px 0;
+        }
+        .method-details-panel details {
+            background: rgba(30, 58, 95, 0.4);
+            border: 1px solid #334155;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .method-details-panel details[open] {
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+        .method-detail-summary {
+            padding: 14px 18px;
+            cursor: pointer;
+            color: #fbbf24;
+            font-weight: 600;
+            font-size: 0.95rem;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s ease;
+        }
+        .method-detail-summary::-webkit-details-marker { display: none; }
+        .method-detail-summary::marker { display: none; content: ''; }
+        .method-detail-summary:hover {
+            background: rgba(251, 191, 36, 0.08);
+        }
+        .method-detail-summary::after {
+            content: '▸';
+            margin-left: auto;
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+        .method-details-panel details[open] > .method-detail-summary::after {
+            transform: rotate(90deg);
+        }
+        .method-detail-content {
+            padding: 0 18px 18px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .method-detail-content p {
+            margin: 10px 0;
+        }
+        .method-detail-content h5 {
+            color: #fbbf24;
+            font-size: 0.95rem;
+            margin: 16px 0 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        .method-detail-content strong {
+            color: #fbbf24;
+        }
+        .method-detail-content br + br {
+            display: block;
+            content: '';
+            margin-top: 6px;
+        }
+
+        /* 全屏推演过渡动画 */
+        .divination-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0f0f23 100%);
+            z-index: 2000;
+            opacity: 1;
+            transition: opacity 0.8s ease;
+        }
+        .divination-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .overlay-content {
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* 八卦旋转图案 */
+        .bagua-spinner {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+            overflow: visible;
+            flex-shrink: 0;
+        }
+        .spinner-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid transparent;
+        }
+        .ring-outer {
+            width: 260px;
+            height: 260px;
+            top: 20px;
+            left: 20px;
+            border-top-color: #d4af37;
+            border-right-color: #d4af37;
+            animation: rotate 4s linear infinite;
+        }
+        .ring-inner {
+            width: 200px;
+            height: 200px;
+            top: 50px;
+            left: 50px;
+            border-bottom-color: #fbbf24;
+            border-left-color: #fbbf24;
+            animation: rotate 3s linear infinite reverse;
+        }
+        .spinner-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: #d4af37;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        .spinner-gua {
+            position: absolute;
+            font-size: 28px;
+            color: #fbbf24;
+            opacity: 0.8;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+        /* 先天八卦方位：乾南坤北，离东坎西，兑东南震东北，巽西南艮西北 */
+        /* 中心(150,150)，半径130，按45°间隔逆时针从正上方开始排列 */
+        .gua-qian { top: 15px;  left: 150px; transform: translate(-50%,0);   animation-delay: 0s; }     /* 乾 ☰ 南（正上） */
+        .gua-dui  { top: 53px;  left: 242px; transform: translate(-50%,0);   animation-delay: 0.25s; }  /* 兑 ☱ 东南（右上45°） */
+        .gua-li   { top: 150px; left: 280px; transform: translate(-50%,-50%);animation-delay: 0.5s; }   /* 离 ☲ 东（正右） */
+        .gua-zhen { top: 242px; left: 242px; transform: translate(-50%,0);   animation-delay: 1.75s; }  /* 震 ☳ 东北（右下135°） */
+        .gua-kun  { bottom: 15px;left: 150px; transform: translate(-50%,0);   animation-delay: 1s; }    /* 坤 ☷ 北（正下） */
+        .gua-xun  { top: 242px; left: 58px;  transform: translate(-50%,0);   animation-delay: 0.75s; }  /* 巽 ☴ 西南（左下225°） */
+        .gua-kan  { top: 150px; left: 20px;  transform: translate(-50%,-50%);animation-delay: 1.5s; }   /* 坎 ☵ 西（正左） */
+        .gua-gen  { top: 53px;  left: 58px;  transform: translate(-50%,0);   animation-delay: 1.25s; }  /* 艮 ☶ 西北（左上315°） */
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        @keyframes guaPulse {
+            0%, 100% { font-size: 28px; }
+            50% { font-size: 32px; }
+        }
+        
+        /* 推演文字 */
+        .overlay-text-container {
+            margin-bottom: 30px;
+        }
+        .overlay-main-text {
+            font-size: 1.5rem;
+            color: #fbbf24;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+            animation: textGlow 2s ease-in-out infinite;
+        }
+        .overlay-sub-text {
+            font-size: 1rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.6); }
+        }
+        
+        /* 道家名句 */
+        .overlay-quotes {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .overlay-quote-item {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            margin: 8px 0;
+            background: rgba(30, 58, 95, 0.4);
+            border-left: 3px solid #d4af37;
+            border-radius: 0 8px 8px 0;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s ease;
+        }
+        .overlay-quote-item.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 480px) {
+            .method-detail-content { padding: 0 14px 14px; font-size: 0.85rem; }
+            .method-detail-summary { padding: 12px 14px; font-size: 0.9rem; }
+            .bagua-spinner { width: 220px; height: 220px; }
+            .ring-outer { width: 220px; height: 220px; top: 0; left: 0; }
+            .ring-inner { width: 160px; height: 160px; top: 30px; left: 30px; }
+            .spinner-symbol { font-size: 50px; }
+            .spinner-gua { font-size: 22px; }
+            /* 移动端八卦位置：容器220×220，中心(110,110)，半径100 */
+            .gua-qian { top: 10px;  left: 110px; }
+            .gua-dui  { top: 41px;  left: 181px; }
+            .gua-li   { top: 110px; left: 200px; }
+            .gua-zhen { top: 181px; left: 181px; }
+            .gua-kun  { bottom: 10px;left: 110px; }
+            .gua-xun  { top: 181px; left: 39px; }
+            .gua-kan  { top: 110px; left: 10px; }
+            .gua-gen  { top: 41px;  left: 39px; }
+            .overlay-main-text { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-bagua">☯</div>
+        <div class="loading-text" id="loadingText">道家命理推演中...</div>
+        <div class="loading-step" id="loadingStep">正在起卦...</div>
+    </div>
+
+    <!-- 全屏推演过渡动画 -->
+    <div id="divinationOverlay" class="divination-overlay hidden">
+        <div class="overlay-content">
+            <!-- 道家图案容器 -->
+            <div class="bagua-spinner">
+                <div class="spinner-ring ring-outer"></div>
+                <div class="spinner-ring ring-inner"></div>
+                <div class="spinner-symbol">☯</div>
+                <!-- 先天八卦方位：乾南坤北，离东坎西，兑东南震东北，巽西南艮西北 -->
+                <div class="spinner-gua gua-qian" title="乾 ☰ 南">☰</div>
+                <div class="spinner-gua gua-kun" title="坤 ☷ 北">☷</div>
+                <div class="spinner-gua gua-li" title="离 ☲ 东">☲</div>
+                <div class="spinner-gua gua-kan" title="坎 ☵ 西">☵</div>
+                <div class="spinner-gua gua-dui" title="兑 ☱ 东南">☱</div>
+                <div class="spinner-gua gua-zhen" title="震 ☳ 东北">☳</div>
+                <div class="spinner-gua gua-xun" title="巽 ☴ 西南">☴</div>
+                <div class="spinner-gua gua-gen" title="艮 ☶ 西北">☶</div>
+            </div>
+            <!-- 推演过程文字 -->
+            <div class="overlay-text-container">
+                <div class="overlay-main-text" id="overlayMainText">起卦演数，推演天机...</div>
+                <div class="overlay-sub-text" id="overlaySubText">观天之道，执天之行</div>
+            </div>
+            <!-- 道家名句列表 -->
+            <div class="overlay-quotes" id="overlayQuotes"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 标题区域 -->
+        <header class="header">
+            <div class="bagua-symbol">☯</div>
+            <h1>道家命理推演</h1>
+            <p class="subtitle">传承千年智慧 · 天人合一之道</p>
+            <div class="yinyang-container">
+                <div class="yinyang">☯</div>
+            </div>
+        </header>
+
+        <!-- 道家理论展示 -->
+        <div class="theory-banner">
+            <h3>📜 道家预测原理</h3>
+            <div class="theory-quote">
+                "易有太极，是生两仪，两仪生四象，四象生八卦。"<br>
+                ——《易经·系辞上》
+            </div>
+            <div class="theory-source">
+                本系统运用梅花易数、八字命理、五行生克等道家传统预测方法，结合天干地支、阴阳五行理论，为您解读命运密码。
+            </div>
+        </div>
+
+        <!-- 起卦方法选择 -->
+        <section class="input-section">
+            <div class="card">
+                <h2>🔮 选择起卦方法</h2>
+                <p style="color: #94a3b8; margin-bottom: 15px; font-size: 0.9rem;">
+                    道家预测讲究"心诚则灵"，请选择最适合您当前心境的起卦方式
+                </p>
+                <div class="method-selector">
+                    <button class="method-btn active" data-method="time" onclick="selectMethod('time')">
+                        <div class="icon">⏰</div>
+                        <div class="name">时间起卦</div>
+                        <div class="desc">以当前时间起卦，最为简便</div>
+                    </button>
+                    <button class="method-btn" data-method="question" onclick="selectMethod('question')">
+                        <div class="icon">💭</div>
+                        <div class="name">问事起卦</div>
+                        <div class="desc">以心中所想之事起卦</div>
+                    </button>
+                    <button class="method-btn" data-method="number" onclick="selectMethod('number')">
+                        <div class="icon">🔢</div>
+                        <div class="name">数字起卦</div>
+                        <div class="desc">以任意数字起卦推演</div>
+                    </button>
+                </div>
+
+                <!-- 方法详细解释 -->
+                <div class="method-details-panel">
+                    <details id="detailTime" open>
+                        <summary class="method-detail-summary">📖 梅花易数 · 深度解读</summary>
+                        <div class="method-detail-content">
+                            <p>梅花易数为宋代大儒<strong>邵雍（邵康节）</strong>所创，乃易学占卜之捷法。其核心思想源于《易经·系辞》所言："易有太极，是生两仪，两仪生四象，四象生八卦。"</p>
+                            <h5>🔬 数理依据</h5>
+                            <p>天地万物皆有定数，时间本身就是宇宙能量场的坐标。以年、月、日、时辰之数起卦，正是捕捉了"天人感应"的关键时刻——问卦之时，即是天地气机与人心交汇之刻。邵雍《皇极经世》云："一气分而为阴阳，判阴阳而立数。"</p>
+                            <h5>📐 算法精要</h5>
+                            <p>• 上卦 =（年数 + 月数 + 日数）÷ 8 取余<br>• 下卦 =（年数 + 月数 + 日数 + 时辰数）÷ 8 取余<br>• 动爻 =（年数 + 月数 + 日数 + 时辰数）÷ 6 取余<br>• 余数对应先天八卦数：乾一、兑二、离三、震四、巽五、坎六、艮七、坤八（余0按坤卦论）</p>
+                            <h5>🌿 哲学根基</h5>
+                            <p>《皇极经世》云："先天之学，心法也；后天之学，用法也。"梅花易数属于先天易学，强调"观物取象"的直觉思维。邵雍认为宇宙万物的运行遵循着固定的数理规律，而时间是这一规律最直接的体现。以时辰起卦，犹如在宇宙能量场中精确标注了一个坐标点，据此推演出的卦象能够准确反映事物在该时空节点的本质状态。</p>
+                        </div>
+                    </details>
+                    <details id="detailQuestion">
+                        <summary class="method-detail-summary">📖 问事起卦 · 深度解读</summary>
+                        <div class="method-detail-content">
+                            <p>问事起卦源于《易经·系辞》所载："是以君子将有为也，将有行也，问焉而以言。"心中有所疑虑，凝神静气，以至诚之心感通天地，卦象自然显现。</p>
+                            <h5>🧠 诚意正心</h5>
+                            <p>《礼记·中庸》云："至诚之道，可以前知。国家将兴，必有祯祥；国家将亡，必有妖孽。"问卦之时，须心无杂念、意念专一。古人云"心诚则灵"——诚心凝神，方可使个人气场与天地气场产生共振，卦象方能准确反映事物本质。</p>
+                            <h5>🌊 感通原理</h5>
+                            <p>道家认为"天人感应"是宇宙的基本法则。《道德经》第二十五章云："人法地，地法天，天法道，道法自然。"人心本为天地之灵，当意念高度集中时，便能与所问之事的能量场产生感应。《周易·乾卦·文言》所谓"同声相应，同气相求"，正是此理。</p>
+                            <h5>🎯 适用场景</h5>
+                            <p>此法最适合针对具体事件进行推演，如事业抉择、感情困惑、健康疑虑、学业考试等。因其直接以问题为核心起卦，卦象与所问之事的关联性最强，解读也最为精准。《易经·系辞》云："八卦以象告，爻彖以情言"，问事起卦正是以"情"（意念）感通"象"（卦象）的典型应用。</p>
+                        </div>
+                    </details>
+                    <details id="detailNumber">
+                        <summary class="method-detail-summary">📖 数字起卦 · 深度解读</summary>
+                        <div class="method-detail-content">
+                            <p>数字起卦法体现了"万物皆数"的道家哲学思想。《易经·系辞》云："天一，地二，天三，地四，天五，地六，天七，地八，天九，地十。天数五，地数五，五位相得而各有合。"</p>
+                            <h5>🔢 数理渊源</h5>
+                            <p><strong>河图洛书</strong>是中华数理哲学之源头。河图以十个数配五行，揭示天地生成之理："天一生水，地六成之；地二生火，天七成之；天三生木，地八成之；地四生金，天九成之；天五生土，地十成之。"洛书以九宫数演变化，阐述事物运行之规律。数字起卦法正是传承了这一古老的数理哲学传统。</p>
+                            <h5>🌊 取数之道</h5>
+                            <p>可取任意数字起卦——电话号码、车牌、随机数字皆可。《易经》认为，万事万物皆有定数，数字是事物能量的抽象表达。取数之瞬间，数字与问卦者之间便建立了能量联系，此即"偶然中有必然"之理。《易经·系辞》云："参伍以变，错综其数。通其变，遂成天下之文；极其数，遂定天下之象。"</p>
+                            <h5>📐 算法精要</h5>
+                            <p>• 上卦 = 数字 ÷ 8 取余<br>• 下卦 = 数字各位之和 ÷ 8 取余<br>• 动爻 = 数字各位之和 ÷ 6 取余<br>• 余0按坤卦（8）或第六爻论<br>所得卦象即蕴含了该数字所代表的能量信息。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- 问事起卦输入 -->
+                <div id="questionMethod" class="method-content" style="display: block;">
+                    <div class="form-group">
+                        <label for="question">🔮 您想问什么？</label>
+                        <div class="question-categories">
+                            <button type="button" class="category-btn active" data-category="事业" onclick="selectCategory('事业')">💼 事业</button>
+                            <button type="button" class="category-btn" data-category="财运" onclick="selectCategory('财运')">💰 财运</button>
+                            <button type="button" class="category-btn" data-category="感情" onclick="selectCategory('感情')">❤️ 感情</button>
+                            <button type="button" class="category-btn" data-category="健康" onclick="selectCategory('健康')">🏥 健康</button>
+                            <button type="button" class="category-btn" data-category="学业" onclick="selectCategory('学业')">📚 学业</button>
+                            <button type="button" class="category-btn" data-category="其他" onclick="selectCategory('其他')">🔮 其他</button>
+                        </div>
+                        <textarea id="question" rows="3" placeholder="请描述您想问的问题，例如：最近工作不太顺利，想看看未来发展如何？"></textarea>
+                    </div>
+                </div>
+
+                <!-- 数字起卦输入 -->
+                <div id="numberMethod" class="method-content" style="display: none;">
+                    <div class="form-group">
+                        <label for="divinationNumber">🔢 请输入任意数字</label>
+                        <input type="number" id="divinationNumber" placeholder="例如：12345" min="0">
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 8px;">
+                            💡 提示：可以是手机号后几位、随机数字、或任何对您有意义的数字
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 生辰信息（可选） -->
+                <details style="margin-top: 20px; background: rgba(30, 58, 95, 0.3); padding: 15px; border-radius: 10px;">
+                    <summary style="cursor: pointer; color: #fbbf24; font-weight: bold;">
+                        📋 补充生辰信息（选填，可增强推演精准度）
+                    </summary>
+                    <div style="margin-top: 15px;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birthday">出生日期（阳历）</label>
+                                <input type="date" id="birthday">
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">性别</label>
+                                <select id="gender">
+                                    <option value="">请选择</option>
+                                    <option value="male">男</option>
+                                    <option value="female">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthtime">
+                                出生时辰 
+                                <span style="color: #94a3b8; font-size: 0.8rem;">（选填，不知道可跳过）</span>
+                            </label>
+                            <select id="birthtime">
+                                <option value="">不知道/跳过</option>
+                                <option value="0">子时 (23:00-01:00) 🐀</option>
+                                <option value="1">丑时 (01:00-03:00) 🐂</option>
+                                <option value="2">寅时 (03:00-05:00) 🐅</option>
+                                <option value="3">卯时 (05:00-07:00) 🐇</option>
+                                <option value="4">辰时 (07:00-09:00) 🐉</option>
+                                <option value="5">巳时 (09:00-11:00) 🐍</option>
+                                <option value="6">午时 (11:00-13:00) 🐴</option>
+                                <option value="7">未时 (13:00-15:00) 🐑</option>
+                                <option value="8">申时 (15:00-17:00) 🐒</option>
+                                <option value="9">酉时 (17:00-19:00) 🐓</option>
+                                <option value="10">戌时 (19:00-21:00) 🐕</option>
+                                <option value="11">亥时 (21:00-23:00) 🐖</option>
+                            </select>
+                        </div>
+                    </div>
+                </details>
+
+                <button id="calculateBtn" class="primary-btn" onclick="startDivination()">
+                    🔮 开始推演
+                </button>
+                <p class="hint-text">
+                    💡 道家云："心诚则灵"，请静心凝神，专注于您所问之事
+                </p>
+            </div>
+        </section>
+
+        <!-- 结果区域 -->
+        <section id="resultSection" class="result-section hidden" style="display:none;">
+            
+            <!-- 推演过程展示 -->
+            <div class="card result-card">
+                <h2>🔄 推演过程</h2>
+                <div class="term-explanation">
+                    <h4>【起卦原理】</h4>
+                    <p id="qiguaPrinciple"></p>
+                </div>
+                <div class="hexagram-anim" id="hexagramAnim"></div>
+                <div id="qiguaProcess" style="color: #cbd5e1; line-height: 1.8;"></div>
+            </div>
+
+            <!-- 问题卦象 -->
+            <div class="card result-card question-result">
+                <h2>🔮 卦象解读</h2>
+                <div class="question-display" id="questionDisplay"></div>
+                <div class="hexagram-result">
+                    <div class="hexagram-main">
+                        <div class="hexagram-lines" id="questionHexagramLines"></div>
+                        <div class="hexagram-name" id="questionHexagramName"></div>
+                    </div>
+                    <div class="hexagram-interpretation" id="questionInterpretation"></div>
+                </div>
+            </div>
+
+            <!-- 八字信息（如果有） -->
+            <div class="card result-card hidden" id="baziCard">
+                <h2>📊 八字命盘</h2>
+                <div class="term-explanation">
+                    <h4>【八字命理原理】</h4>
+                    <p>八字命理源于道家天人合一思想，认为人的命运与出生时的天地气场密切相关。天干地支蕴含阴阳五行信息，通过分析八字中五行的旺衰生克，可以推断一个人的命运走势。</p>
+                </div>
+                <div class="bazi-display">
+                    <div class="bazi-column">
+                        <div class="bazi-label">年柱</div>
+                        <div class="bazi-gan" id="yearGan">甲</div>
+                        <div class="bazi-zhi" id="yearZhi">子</div>
+                    </div>
+                    <div class="bazi-column">
+                        <div class="bazi-label">月柱</div>
+                        <div class="bazi-gan" id="monthGan">丙</div>
+                        <div class="bazi-zhi" id="monthZhi">寅</div>
+                    </div>
+                    <div class="bazi-column">
+                        <div class="bazi-label">日柱</div>
+                        <div class="bazi-gan" id="dayGan">戊</div>
+                        <div class="bazi-zhi" id="dayZhi">午</div>
+                    </div>
+                    <div class="bazi-column">
+                        <div class="bazi-label">时柱</div>
+                        <div class="bazi-gan" id="hourGan">?</div>
+                        <div class="bazi-zhi" id="hourZhi">?</div>
+                    </div>
+                </div>
+                <div class="shishen-info">
+                    <h3>十神分析</h3>
+                    <div id="shishenDisplay" class="shishen-grid"></div>
+                </div>
+            </div>
+
+            <!-- 五行分析（如果有） -->
+            <div class="card result-card hidden" id="wuxingCard">
+                <h2>🌊 五行分析</h2>
+                <div class="term-explanation">
+                    <h4>【五行生克原理】</h4>
+                    <p>五行学说是道家哲学的核心之一。金木水火土五种元素相互生克制化，构成宇宙万物的运行规律。五行相生：木生火、火生土、土生金、金生水、水生木；五行相克：木克土、土克水、水克火、火克金、金克木。</p>
+                </div>
+                <div class="wuxing-chart">
+                    <div class="wuxing-item" data-element="metal">
+                        <div class="wuxing-icon">⚙️ 金</div>
+                        <div class="wuxing-name">金</div>
+                        <div class="wuxing-bar">
+                            <div class="wuxing-fill" id="metalFill" style="width: 0%"></div>
+                        </div>
+                        <div class="wuxing-count" id="metalCount">0</div>
+                    </div>
+                    <div class="wuxing-item" data-element="wood">
+                        <div class="wuxing-icon">🌳 木</div>
+                        <div class="wuxing-name">木</div>
+                        <div class="wuxing-bar">
+                            <div class="wuxing-fill" id="woodFill" style="width: 0%"></div>
+                        </div>
+                        <div class="wuxing-count" id="woodCount">0</div>
+                    </div>
+                    <div class="wuxing-item" data-element="water">
+                        <div class="wuxing-icon">💧 水</div>
+                        <div class="wuxing-name">水</div>
+                        <div class="wuxing-bar">
+                            <div class="wuxing-fill" id="waterFill" style="width: 0%"></div>
+                        </div>
+                        <div class="wuxing-count" id="waterCount">0</div>
+                    </div>
+                    <div class="wuxing-item" data-element="fire">
+                        <div class="wuxing-icon">🔥 火</div>
+                        <div class="wuxing-name">火</div>
+                        <div class="wuxing-bar">
+                            <div class="wuxing-fill" id="fireFill" style="width: 0%"></div>
+                        </div>
+                        <div class="wuxing-count" id="fireCount">0</div>
+                    </div>
+                    <div class="wuxing-item" data-element="earth">
+                        <div class="wuxing-icon">🏔️ 土</div>
+                        <div class="wuxing-name">土</div>
+                        <div class="wuxing-bar">
+                            <div class="wuxing-fill" id="earthFill" style="width: 0%"></div>
+                        </div>
+                        <div class="wuxing-count" id="earthCount">0</div>
+                    </div>
+                </div>
+                <div class="wuxing-analysis" id="wuxingAnalysis"></div>
+            </div>
+
+            <!-- 道家智慧 -->
+            <div class="card result-card">
+                <h2>📜 道家智慧</h2>
+                <div class="term-explanation" id="daoistWisdom">
+                    <h4></h4>
+                    <p></p>
+                </div>
+            </div>
+
+            <!-- 解答区域 -->
+            <div class="card result-card">
+                <h2>📝 解答</h2>
+                <div class="answer-section" id="answerSection">
+                    <div class="answer-item">
+                        <h3>🎯 问题分析</h3>
+                        <p id="questionAnalysis"></p>
+                    </div>
+                    <div class="answer-item">
+                        <h3>📖 卦象解读</h3>
+                        <p id="hexagramAnswer"></p>
+                    </div>
+                    <div class="answer-item">
+                        <h3>💡 建议</h3>
+                        <p id="advice"></p>
+                    </div>
+                    <div class="answer-item">
+                        <h3>🍀 开运提示</h3>
+                        <p id="luckyTips"></p>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="action-buttons">
+                    <button class="btn-share" onclick="shareResult()">📤 分享结果</button>
+                    <button class="btn-reset" onclick="resetDivination()">🔄 重新推演</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <div class="theory-banner" style="margin-bottom: 0; border-radius: 0 0 12px 12px;">
+                <p>☯ 道家命理推演 - 传承千年智慧 ☯</p>
+                <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 10px;">
+                    "道生一，一生二，二生三，三生万物。" ——《道德经》
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="animations.js"></script>
+    <script src="daoist-effects.js"></script>
+    <script src="data.js"></script>
+    <script src="calculator.js"></script>
+    <script src="api-config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

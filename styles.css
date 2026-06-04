@@ -1,0 +1,1873 @@
+/* ========================================
+   道家命理 - 全局样式
+   ======================================== */
+
+:root {
+    --primary-color: #8B4513;
+    --primary-light: #D2691E;
+    --secondary-color: #DAA520;
+    --bg-color: #1a1a2e;
+    --card-bg: #16213e;
+    --text-color: #f5f5f5;
+    --text-secondary: #a0a0a0;
+    --border-color: #DAA520;
+    --metal-color: #C0C0C0;
+    --wood-color: #228B22;
+    --water-color: #1E90FF;
+    --fire-color: #FF4500;
+    --earth-color: #DEB887;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    background: linear-gradient(135deg, var(--bg-color) 0%, #0f3460 100%);
+    color: var(--text-color);
+    min-height: 100vh;
+    min-height: 100dvh; /* 动态视口高度，解决手机浏览器地址栏问题 */
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* ========================================
+   标题区域
+   ======================================== */
+
+.header {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.bagua-symbol {
+    font-size: 80px;
+    animation: rotate 20s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.header h1 {
+    font-size: 2.5em;
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--secondary-color); /* fallback for browsers without gradient clip */
+    margin-bottom: 10px;
+    min-height: 1.2em; /* 确保标题区域有高度，即使文字渲染延迟 */
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1em;
+}
+
+/* ========================================
+   卡片样式
+   ======================================== */
+
+.card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+    color: var(--secondary-color);
+    margin-bottom: 25px;
+    font-size: 1.5em;
+    border-bottom: 2px solid rgba(218, 165, 32, 0.3);
+    padding-bottom: 10px;
+}
+
+/* ========================================
+   表单样式
+   ======================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+.optional-tag {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    font-weight: normal;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    font-size: 1em;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 15px rgba(218, 165, 32, 0.2);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/* ========================================
+   起卦方法选择器
+   ======================================== */
+
+.method-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.method-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 15px;
+    border: 2px solid rgba(218, 165, 32, 0.4);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+}
+
+.method-btn:hover {
+    background: rgba(218, 165, 32, 0.1);
+    border-color: var(--secondary-color);
+}
+
+.method-btn.active {
+    background: var(--secondary-color);
+    color: var(--bg-color);
+    font-weight: bold;
+}
+
+/* ========================================
+   问题输入区域
+   ======================================== */
+
+.question-group {
+    background: rgba(218, 165, 32, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px dashed rgba(218, 165, 32, 0.3);
+}
+
+.question-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.category-btn {
+    padding: 8px 16px;
+    border: 1px solid rgba(218, 165, 32, 0.4);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.category-btn:hover, .category-btn.active {
+    background: var(--secondary-color);
+    color: var(--bg-color);
+}
+
+/* ========================================
+   按钮样式
+   ======================================== */
+
+.primary-btn {
+    width: 100%;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--bg-color);
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-light));
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+.hint-text {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    margin-top: 15px;
+}
+
+/* ========================================
+   结果区域
+   ======================================== */
+
+.result-section.hidden {
+    display: none;
+}
+
+.result-card {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.result-card:nth-child(1) { animation-delay: 0s; }
+.result-card:nth-child(2) { animation-delay: 0.1s; }
+.result-card:nth-child(3) { animation-delay: 0.2s; }
+.result-card:nth-child(4) { animation-delay: 0.3s; }
+.result-card:nth-child(5) { animation-delay: 0.4s; }
+.result-card:nth-child(6) { animation-delay: 0.5s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   问题显示区域
+   ======================================== */
+
+.question-display {
+    text-align: center;
+    padding: 15px;
+    background: rgba(218, 165, 32, 0.1);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+.question-display .theory-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #1e3a5f, #0f172a);
+    border: 1px solid var(--secondary-color);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    margin: 5px;
+}
+
+/* ========================================
+   推演过程样式
+   ======================================== */
+
+#qiguaProcess {
+    margin-top: 15px;
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+#qiguaProcess strong {
+    color: var(--secondary-color);
+}
+
+.hexagram-anim {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 8px;
+    padding: 20px;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.hexagram-anim .line {
+    height: 12px;
+    width: 120px;
+    transition: all 0.5s ease;
+}
+
+.hexagram-anim .line.solid {
+    background: linear-gradient(90deg, #d4af37, #fbbf24, #d4af37);
+    border-radius: 2px;
+}
+
+.hexagram-anim .line.broken {
+    background: linear-gradient(90deg, #d4af37 0%, #d4af37 45%, transparent 45%, transparent 55%, #d4af37 55%, #d4af37 100%);
+}
+
+/* ========================================
+   理论依据标签
+   ======================================== */
+
+.theory-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #1e3a5f, #0f172a);
+    border: 1px solid var(--secondary-color);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    margin: 5px;
+}
+
+/* ========================================
+   道家术语解释
+   ======================================== */
+
+.term-explanation {
+    background: rgba(30, 58, 95, 0.5);
+    border-left: 4px solid var(--secondary-color);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.term-explanation h4 {
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+
+.term-explanation p {
+    color: #cbd5e1;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* ========================================
+   问题卦象展示
+   ======================================== */
+
+.hexagram-result {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.hexagram-main {
+    text-align: center;
+}
+
+.hexagram-lines {
+    width: 120px;
+    margin: 0 auto 15px;
+}
+
+.hexagram-lines .line {
+    height: 12px;
+    margin-bottom: 8px;
+    position: relative;
+    transition: all 0.5s ease;
+}
+
+.hexagram-lines .line.solid {
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+.hexagram-lines .line.broken {
+    background: transparent;
+}
+
+.hexagram-lines .line.broken::before,
+.hexagram-lines .line.broken::after {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 45%;
+    background: var(--secondary-color);
+    border-radius: 3px;
+}
+
+.hexagram-lines .line.broken::before {
+    left: 0;
+}
+
+.hexagram-lines .line.broken::after {
+    right: 0;
+}
+
+.hexagram-name {
+    font-size: 1.8em;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.hexagram-interpretation {
+    flex: 1;
+    min-width: 250px;
+}
+
+.hexagram-interpretation h4 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.hexagram-interpretation p {
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+/* ========================================
+   八字命盘
+   ======================================== */
+
+.bazi-display {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.bazi-column {
+    text-align: center;
+    padding: 15px 20px;
+    background: rgba(218, 165, 32, 0.1);
+    border-radius: 10px;
+    min-width: 80px;
+}
+
+.bazi-label {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.bazi-gan {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 5px;
+}
+
+.bazi-zhi {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--primary-light);
+}
+
+/* ========================================
+   十神分析
+   ======================================== */
+
+.shishen-info h3 {
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.shishen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.shishen-item {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(218, 165, 32, 0.2);
+}
+
+.shishen-item .name {
+    color: var(--secondary-color);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.shishen-item .element {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+}
+
+/* ========================================
+   五行分析
+   ======================================== */
+
+.wuxing-chart {
+    display: grid;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.wuxing-item {
+    display: grid;
+    grid-template-columns: 80px 40px 1fr 50px;
+    align-items: center;
+    gap: 10px;
+}
+
+.wuxing-icon {
+    font-size: 1.1em;
+}
+
+.wuxing-name {
+    font-weight: bold;
+}
+
+.wuxing-bar {
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.wuxing-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s ease;
+}
+
+[data-element="metal"] .wuxing-fill { background: var(--metal-color); }
+[data-element="wood"] .wuxing-fill { background: var(--wood-color); }
+[data-element="water"] .wuxing-fill { background: var(--water-color); }
+[data-element="fire"] .wuxing-fill { background: var(--fire-color); }
+[data-element="earth"] .wuxing-fill { background: var(--earth-color); }
+
+.wuxing-count {
+    text-align: right;
+    font-weight: bold;
+}
+
+.wuxing-analysis {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(218, 165, 32, 0.1);
+    border-radius: 10px;
+    line-height: 1.8;
+}
+
+/* ========================================
+   解答区域
+   ======================================== */
+
+.answer-section {
+    display: grid;
+    gap: 20px;
+}
+
+.answer-item {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.answer-item h3 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.answer-item p {
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+/* ========================================
+   details/summary 样式
+   ======================================== */
+
+details {
+    margin-top: 20px;
+    background: rgba(30, 58, 95, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+details summary {
+    cursor: pointer;
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-size: 1rem;
+    user-select: none;
+}
+
+details summary:hover {
+    opacity: 0.9;
+}
+
+/* ========================================
+   页脚
+   ======================================== */
+
+.footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.footer p:first-child {
+    color: var(--secondary-color);
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.disclaimer {
+    font-size: 0.85em;
+    opacity: 0.7;
+}
+
+/* ========================================
+   分享弹窗样式
+   ======================================== */
+
+.share-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.share-modal.show {
+    opacity: 1;
+}
+
+.share-modal-content {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 16px;
+    padding: 0;
+    width: 90%;
+    max-width: 520px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.share-modal.show .share-modal-content {
+    transform: scale(1) translateY(0);
+}
+
+.share-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.15);
+    background: rgba(251, 191, 36, 0.05);
+}
+
+.share-modal-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: #fbbf24;
+    font-weight: 700;
+}
+
+.share-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.share-close:hover {
+    color: #fbbf24;
+}
+
+.share-preview {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    min-height: 150px;
+    max-height: 50vh;
+    -webkit-overflow-scrolling: touch;
+}
+
+.share-preview pre {
+    font-family: 'Courier New', 'Noto Serif SC', monospace;
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+    background: rgba(15, 23, 42, 0.6);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(251, 191, 36, 0.1);
+}
+
+.share-actions {
+    display: flex;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(251, 191, 36, 0.15);
+    background: rgba(15, 23, 42, 0.4);
+}
+
+.share-action-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.share-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.share-action-btn:active {
+    transform: translateY(0);
+}
+
+.copy-btn {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000;
+}
+
+.copy-btn:hover {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.copy-btn.copied {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+}
+
+.wechat-btn {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.wechat-btn:hover {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+}
+
+.weibo-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.weibo-btn:hover {
+    background: linear-gradient(135deg, #f87171, #ef4444);
+}
+
+.share-tip {
+    text-align: center;
+    padding: 12px 24px 18px;
+    font-size: 0.78rem;
+    color: #64748b;
+    background: rgba(15, 23, 42, 0.4);
+}
+
+/* ========================================
+   Toast 提示样式
+   ======================================== */
+
+.toast-message {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    z-index: 10001;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+    pointer-events: none;
+}
+
+.toast-message.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ========================================
+   分享弹窗滚动条美化
+   ======================================== */
+
+.share-preview::-webkit-scrollbar {
+    width: 6px;
+}
+
+.share-preview::-webkit-scrollbar-track {
+    background: rgba(251, 191, 36, 0.05);
+    border-radius: 3px;
+}
+
+.share-preview::-webkit-scrollbar-thumb {
+    background: rgba(251, 191, 36, 0.2);
+    border-radius: 3px;
+}
+
+.share-preview::-webkit-scrollbar-thumb:hover {
+    background: rgba(251, 191, 36, 0.4);
+}
+
+/* ========================================
+   React Bits 风格动画 (animations.js)
+   ======================================== */
+
+/* 卡片滚动揭示 */
+.card, .theory-banner, .footer {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card.revealed, .theory-banner.revealed, .footer.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 延迟入场 */
+.card:nth-child(1) { transition-delay: 0s; }
+.card:nth-child(2) { transition-delay: 0.1s; }
+.card:nth-child(3) { transition-delay: 0.2s; }
+.card:nth-child(4) { transition-delay: 0.3s; }
+.card:nth-child(5) { transition-delay: 0.4s; }
+.card:nth-child(6) { transition-delay: 0.5s; }
+
+/* 浮动动画 */
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(var(--float-amplitude, -5px)); }
+}
+
+/* 发光脉冲 */
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 var(--glow-intensity, 20px) var(--glow-color, rgba(218, 165, 32, 0.3)); }
+    50% { box-shadow: 0 0 calc(var(--glow-intensity, 20px) * 2) var(--glow-color, rgba(218, 165, 32, 0.3)); }
+}
+
+/* 文字模糊揭示字符 */
+.blur-char {
+    display: inline-block;
+}
+
+/* 卡片发光悬停增强 */
+.card:hover {
+    border-color: rgba(218, 165, 32, 0.5);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(218, 165, 32, 0.1);
+    transition: all 0.4s ease;
+}
+
+/* 主按钮发光增强 */
+.primary-btn:hover {
+    box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4), 0 0 40px rgba(218, 165, 32, 0.15);
+}
+
+/* 操作按钮组 */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* 结果卡片覆盖滚动揭示（因为它们有 display:none 控制） */
+.result-section .result-card {
+    opacity: 1;
+    transform: none;
+}
+
+/* ========================================
+   响应式设计 - 手机浏览器适配
+   ======================================== */
+
+/* 大屏手机 / 小平板 (max-width: 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .header {
+        padding: 30px 15px;
+    }
+
+    .header h1 {
+        font-size: 2em;
+    }
+
+    .bagua-symbol {
+        font-size: 60px;
+        margin-bottom: 15px;
+    }
+
+    .subtitle {
+        font-size: 0.95em;
+    }
+
+    .card {
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+    }
+
+    .card h2 {
+        font-size: 1.3em;
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    input, select, textarea {
+        padding: 10px 12px;
+        font-size: 16px; /* 防止iOS自动缩放 */
+    }
+
+    .method-selector {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .method-btn {
+        padding: 14px 15px;
+        font-size: 0.95em;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .method-btn .icon {
+        font-size: 1.8rem;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .method-btn .name {
+        font-size: 1rem;
+    }
+
+    .method-btn .desc {
+        font-size: 0.8rem;
+    }
+
+    .question-categories {
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .category-btn {
+        padding: 8px 14px;
+        font-size: 0.88em;
+    }
+
+    .bazi-display {
+        gap: 10px;
+    }
+
+    .bazi-column {
+        padding: 12px 15px;
+        min-width: 70px;
+    }
+
+    .bazi-gan, .bazi-zhi {
+        font-size: 1.6em;
+    }
+
+    .wuxing-item {
+        grid-template-columns: 60px 30px 1fr 40px;
+        gap: 8px;
+    }
+
+    .wuxing-bar {
+        height: 18px;
+    }
+
+    .primary-btn {
+        padding: 14px 20px;
+        font-size: 1.1em;
+    }
+
+    .hexagram-result {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .hexagram-interpretation {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .hexagram-anim {
+        padding: 15px;
+    }
+
+    .hexagram-anim .line {
+        width: 100px;
+    }
+
+    .result-card {
+        padding: 18px 15px;
+    }
+
+    .answer-item {
+        padding: 15px;
+    }
+
+    .answer-item h3 {
+        font-size: 1.1em;
+    }
+
+    .term-explanation {
+        padding: 12px;
+    }
+
+    .term-explanation p {
+        font-size: 0.9rem;
+    }
+
+    .theory-banner {
+        padding: 15px;
+    }
+
+    .theory-banner h3 {
+        font-size: 1.1rem;
+    }
+
+    .theory-quote {
+        font-size: 0.95rem;
+    }
+
+    .theory-source {
+        font-size: 0.82rem;
+    }
+
+    /* 加载动画适配 */
+    .loading-bagua {
+        width: 100px;
+        height: 100px;
+        font-size: 60px;
+    }
+
+    .loading-text {
+        font-size: 1rem;
+    }
+
+    .shishen-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+
+    .shishen-item {
+        padding: 8px;
+    }
+
+    /* 分享弹窗适配 */
+    .share-modal-content {
+        width: 95%;
+        max-height: 85vh;
+    }
+
+    .share-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .share-action-btn {
+        padding: 12px 15px;
+        font-size: 0.9em;
+    }
+
+    .footer {
+        padding: 25px 15px;
+    }
+}
+
+/* 中等手机 (max-width: 600px) */
+@media (max-width: 600px) {
+    .header {
+        padding: 25px 10px;
+    }
+
+    .header h1 {
+        font-size: 1.7em;
+    }
+
+    .bagua-symbol {
+        font-size: 50px;
+    }
+
+    .subtitle {
+        font-size: 0.88em;
+    }
+
+    .card {
+        padding: 16px;
+        margin-bottom: 12px;
+        border-radius: 10px;
+    }
+
+    .card h2 {
+        font-size: 1.15em;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+    label {
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+
+    .method-btn {
+        padding: 12px;
+        font-size: 0.9em;
+    }
+
+    .method-btn .icon {
+        font-size: 1.5rem;
+    }
+
+    .category-btn {
+        padding: 7px 12px;
+        font-size: 0.82em;
+    }
+
+    .primary-btn {
+        padding: 13px 16px;
+        font-size: 1em;
+    }
+
+    .hexagram-anim .line {
+        width: 80px;
+    }
+
+    .hexagram-name {
+        font-size: 1.4em;
+    }
+
+    .bazi-column {
+        padding: 10px 12px;
+        min-width: 60px;
+    }
+
+    .bazi-gan, .bazi-zhi {
+        font-size: 1.4em;
+    }
+
+    .wuxing-item {
+        grid-template-columns: 50px 25px 1fr 35px;
+        gap: 6px;
+    }
+
+    .wuxing-icon {
+        font-size: 0.95em;
+    }
+
+    .wuxing-bar {
+        height: 16px;
+    }
+
+    .wuxing-count {
+        font-size: 0.85em;
+    }
+
+    .answer-item {
+        padding: 12px;
+    }
+
+    .answer-item h3 {
+        font-size: 1em;
+    }
+
+    .answer-item p {
+        font-size: 0.92em;
+        line-height: 1.7;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-buttons button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .term-explanation {
+        padding: 10px;
+    }
+
+    .term-explanation h4 {
+        font-size: 0.95em;
+    }
+
+    .term-explanation p {
+        font-size: 0.85em;
+    }
+
+    .shishen-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .shishen-item {
+        padding: 6px;
+    }
+
+    .shishen-item .name {
+        font-size: 0.8em;
+    }
+
+    .shishen-item .element {
+        font-size: 0.7em;
+    }
+
+    .theory-quote {
+        font-size: 0.88rem;
+        line-height: 1.6;
+    }
+
+    .details {
+        padding: 12px;
+    }
+
+    details summary {
+        font-size: 0.9rem;
+    }
+
+    #qiguaProcess {
+        font-size: 0.9em;
+        line-height: 1.7;
+    }
+
+    #qiguaPrinciple {
+        font-size: 0.88em;
+    }
+
+    .toast-message {
+        width: 85%;
+        font-size: 0.88em;
+        padding: 12px 20px;
+        top: 20px;
+    }
+
+    .share-preview pre {
+        font-size: 0.78em;
+        line-height: 1.5;
+        padding: 12px;
+    }
+
+    .share-preview {
+        padding: 15px 18px;
+    }
+
+    .share-modal-header {
+        padding: 14px 18px;
+    }
+
+    .share-modal-header h3 {
+        font-size: 1rem;
+    }
+}
+
+/* 小屏手机 (max-width: 480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 8px;
+    }
+
+    .header {
+        padding: 20px 8px;
+    }
+
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .bagua-symbol {
+        font-size: 45px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 0.82em;
+    }
+
+    .card {
+        padding: 14px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+
+    .card h2 {
+        font-size: 1.05em;
+        margin-bottom: 12px;
+    }
+
+    .method-btn {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .method-btn .icon {
+        font-size: 1.3rem;
+    }
+
+    .method-btn .name {
+        font-size: 0.9em;
+    }
+
+    .method-btn .desc {
+        font-size: 0.75em;
+    }
+
+    .category-btn {
+        padding: 6px 10px;
+        font-size: 0.78em;
+    }
+
+    .primary-btn {
+        padding: 12px 14px;
+        font-size: 0.95em;
+    }
+
+    .hexagram-anim .line {
+        width: 70px;
+        height: 10px;
+    }
+
+    .hexagram-lines {
+        width: 90px;
+    }
+
+    .hexagram-name {
+        font-size: 1.2em;
+    }
+
+    .bazi-display {
+        gap: 8px;
+        margin: 20px 0;
+    }
+
+    .bazi-column {
+        padding: 8px 10px;
+        min-width: 55px;
+    }
+
+    .bazi-gan, .bazi-zhi {
+        font-size: 1.2em;
+    }
+
+    .bazi-label {
+        font-size: 0.8em;
+    }
+
+    .wuxing-item {
+        grid-template-columns: 45px 22px 1fr 30px;
+        gap: 5px;
+    }
+
+    .wuxing-icon {
+        font-size: 0.85em;
+    }
+
+    .wuxing-name {
+        font-size: 0.85em;
+    }
+
+    .wuxing-bar {
+        height: 14px;
+    }
+
+    .wuxing-count {
+        font-size: 0.8em;
+    }
+
+    .answer-item h3 {
+        font-size: 0.95em;
+    }
+
+    .answer-item p {
+        font-size: 0.88em;
+    }
+
+    .shishen-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .loading-bagua {
+        width: 80px;
+        height: 80px;
+        font-size: 50px;
+    }
+
+    .loading-text {
+        font-size: 0.9rem;
+    }
+
+    .loading-step {
+        font-size: 0.8rem;
+    }
+
+    .footer p:first-child {
+        font-size: 0.95em;
+    }
+
+    .footer {
+        padding: 20px 10px;
+    }
+}
+
+/* 超小屏手机 (max-width: 360px) */
+@media (max-width: 360px) {
+    .header h1 {
+        font-size: 1.3em;
+    }
+
+    .bagua-symbol {
+        font-size: 38px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .card h2 {
+        font-size: 1em;
+    }
+
+    .method-btn {
+        padding: 8px 10px;
+    }
+
+    .method-btn .icon {
+        font-size: 1.2rem;
+    }
+
+    .method-btn .name {
+        font-size: 0.85em;
+    }
+
+    .category-btn {
+        padding: 5px 8px;
+        font-size: 0.75em;
+    }
+
+    .primary-btn {
+        padding: 11px 12px;
+        font-size: 0.9em;
+    }
+
+    .hexagram-anim .line {
+        width: 60px;
+    }
+
+    .bazi-column {
+        padding: 6px 8px;
+        min-width: 50px;
+    }
+
+    .bazi-gan, .bazi-zhi {
+        font-size: 1.1em;
+    }
+
+    .wuxing-item {
+        grid-template-columns: 40px 20px 1fr 28px;
+        gap: 4px;
+    }
+
+    .question-categories {
+        gap: 5px;
+    }
+
+    .category-btn {
+        padding: 5px 7px;
+        font-size: 0.72em;
+    }
+
+    .answer-section {
+        gap: 12px;
+    }
+
+    .answer-item {
+        padding: 10px;
+    }
+}
+
+/* 横屏手机 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .header {
+        padding: 10px 15px;
+    }
+
+    .bagua-symbol {
+        font-size: 35px;
+        margin-bottom: 5px;
+    }
+
+    .header h1 {
+        font-size: 1.4em;
+    }
+
+    .subtitle {
+        font-size: 0.8em;
+        margin-bottom: 5px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .card h2 {
+        margin-bottom: 10px;
+    }
+
+    .yinyang-container {
+        display: none; /* 横屏隐藏阴阳鱼节省空间 */
+    }
+
+    .theory-banner {
+        padding: 12px;
+    }
+
+    .theory-banner h3 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .theory-quote {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .theory-source {
+        display: none; /* 横屏隐藏冗长说明 */
+    }
+
+    .loading-bagua {
+        width: 80px;
+        height: 80px;
+        font-size: 50px;
+    }
+}
+
+/* ========================================
+   iOS Safari 安全区域适配
+   ======================================== */
+@supports (padding: env(safe-area-inset-bottom)) {
+    body {
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+
+    .footer {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+
+    .share-actions {
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    }
+}
+
+/* ========================================
+   触摸设备优化
+   ======================================== */
+@media (hover: none) and (pointer: coarse) {
+    /* Apple推荐的最小触摸目标尺寸 44x44px */
+    .method-btn, .category-btn, .primary-btn, .share-action-btn {
+        min-height: 44px;
+    }
+
+    /* 移除桌面端的hover效果，避免触摸后残留 */
+    .card:hover {
+        border-color: rgba(218, 165, 32, 0.3);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .method-btn:hover {
+        background: transparent;
+        border-color: rgba(218, 165, 32, 0.4);
+    }
+
+    .method-btn.active:hover {
+        background: var(--secondary-color);
+    }
+
+    .primary-btn:active {
+        transform: scale(0.98);
+        transition-duration: 0.1s;
+    }
+
+    .category-btn:active {
+        transform: scale(0.96);
+        transition-duration: 0.1s;
+    }
+
+    .method-btn:active {
+        transform: scale(0.98);
+        transition-duration: 0.1s;
+    }
+
+    .share-action-btn:active {
+        transform: scale(0.97);
+    }
+
+    /* 按钮触摸反馈增强 */
+    .btn-share:active, .btn-reset:active {
+        transform: scale(0.97);
+    }
+}
+
+/* ========================================
+   高DPI屏幕优化
+   ======================================== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .card {
+        border-width: 0.5px;
+    }
+
+    .term-explanation {
+        border-left-width: 3px;
+    }
+
+    .answer-item {
+        border-left-width: 3px;
+    }
+}
+
+/* ========================================
+   减少动画偏好（无障碍）
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .bagua-symbol {
+        animation: none;
+    }
+
+    .yinyang {
+        animation: none;
+    }
+
+    .loading-bagua {
+        animation: none;
+    }
+}
+
+/* ========================================
+   深色模式滚动条
+   ======================================== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(26, 26, 46, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(218, 165, 32, 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(218, 165, 32, 0.5);
+}
+
+/* ========================================
+   推演加载动画 - 道家风格
+   ======================================== */
+.divination-loading-card {
+    text-align: center;
+    padding: 30px 20px;
+    animation: fadeInScale 0.6s ease-out;
+}
+
+.divination-loading-card .loading-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+    animation: spin 3s linear infinite;
+    color: #DAA520;
+    text-shadow: 0 0 15px rgba(218, 165, 32, 0.5);
+}
+
+.divination-loading-card .loading-quote {
+    font-size: 1.05em;
+    line-height: 1.8;
+    color: #fbbf24;
+    font-style: italic;
+    margin-bottom: 15px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.divination-loading-card .loading-dots {
+    color: #a0a0a0;
+    font-size: 0.95em;
+}
+
+.divination-loading-card .loading-dots span {
+    animation: dotPulse 1.4s infinite ease-in-out;
+}
+
+.divination-loading-card .loading-dots span:nth-child(1) { animation-delay: 0s; }
+.divination-loading-card .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.divination-loading-card .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+    0%, 80%, 100% { opacity: 0; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ========================================
+   淡入结果动画
+   ======================================== */
+.fade-in {
+    animation: resultFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes resultFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   打印样式
+   ======================================== */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    canvas, .loading-overlay, .action-buttons, .footer {
+        display: none !important;
+    }
+}
